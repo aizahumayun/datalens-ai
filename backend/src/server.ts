@@ -1,10 +1,12 @@
 import express from 'express';
+import cors from 'cors';
 import { env } from './config/env.js';
 import { aiRoutes } from './routes/aiRoutes.js';
 import { healthRoutes } from './routes/healthRoutes.js';
 import { errorHandler } from './middleware/errorHandler.js';
 
 const app = express();
+app.use(cors())
 
 app.use(express.json({ limit: '15mb' }));
 
@@ -32,4 +34,8 @@ function startServerOnPort(port: number) {
   });
 }
 
-startServerOnPort(env.port);
+export default app;
+
+if (!process.env.VERCEL) {
+  startServerOnPort(env.port);
+}
